@@ -1,0 +1,171 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "V1",
+    "title": "Mouser APIs",
+    "description": "With Mouser's APIs, you can get quick and reliable access to product data as well as cart and ordering capabilities.",
+    "x-swagger-net-version": "8.5.12.001"
+  },
+  "host": "api.mouser.com",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/v{version}/search/partnumber": {
+      "post": {
+        "tags": [
+          "SearchApi"
+        ],
+        "summary": "Search parts by part number and return a maximum of 50 parts. Please review the SearchByPartRequest item in the Models section below to view the detailed description of request parameters.",
+        "operationId": "SearchApi_SearchByPartNumber",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchByPartRequestRoot"
+            }
+          },
+          {
+            "name": "apiKey",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SearchResponseRoot"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SearchByPartRequestRoot": {
+      "properties": {
+        "SearchByPartRequest": {
+          "$ref": "#/definitions/SearchByPartRequest"
+        }
+      },
+      "xml": {
+        "name": "SearchByPartRequestRoot"
+      },
+      "type": "object"
+    },
+    "SearchByPartRequest": {
+      "description": "Search parts by part number and return a maximum of 50 parts.",
+      "properties": {
+        "mouserPartNumber": {
+          "description": "Used to search parts by the specific Mouser part number with a maximum input of 10 part numbers, separated by a pipe symbol for the search. Each part number must be a minimum of 3 characters and a maximum of 40 characters. For example: 494-JANTX2N2222A|610-2N2222-TL|637-2N2222A",
+          "type": "string"
+        },
+        "partSearchOptions": {
+          "description": "Optional.  If not provided, the default is None.  Refers to options supported by the search engine. Only one value at a time is supported. \r\nThe following values are valid: None | Exact - can use string representations or integer IDs: 1[None] | 2[Exact]",
+          "type": "string"
+        },
+        "mouserPaysCustomsAndDuties": {
+          "description": "Optional. If true, prices reflect Mouser paying applicable Import Duty and Customs fees on customer's behalf. Default is false.",
+          "example": "false",
+          "type": "boolean"
+        }
+      },
+      "xml": {
+        "name": "SearchByPartRequest"
+      },
+      "type": "object"
+    },
+    "SearchResponseRoot": {
+      "properties": {
+        "Errors": {
+          "items": {
+            "$ref": "#/definitions/ErrorEntity"
+          },
+          "xml": {
+            "name": "ErrorEntity",
+            "wrapped": true
+          },
+          "type": "array"
+        },
+        "SearchResults": {
+          "$ref": "#/definitions/SearchResponse"
+        }
+      },
+      "xml": {
+        "name": "SearchResponseRoot"
+      },
+      "type": "object"
+    },
+    "SearchResponse": {
+      "properties": {
+        "NumberOfResult": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Parts": {
+          "items": {
+            "$ref": "#/definitions/MouserPart"
+          },
+          "xml": {
+            "name": "MouserPart",
+            "wrapped": true
+          },
+          "type": "array"
+        }
+      },
+      "xml": {
+        "name": "SearchResponse"
+      },
+      "type": "object"
+    },
+    "MouserPart": {
+      "properties": {
+        "Availability": {
+          "type": "string"
+        },
+        "DataSheetUrl": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Manufacturer": {
+          "type": "string"
+        },
+        "ManufacturerPartNumber": {
+          "type": "string"
+        },
+        "MouserPartNumber": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "MouserPart"
+      },
+      "type": "object"
+    }
+  }
+}
