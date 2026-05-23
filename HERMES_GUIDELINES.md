@@ -14,7 +14,8 @@ These guidelines govern the behavior of the Hermes agent while operating autonom
 *   **Graceful Exit**: If an unrecoverable error occurs (e.g., API key revoked, no internet), log the specific reason in `OVERNIGHT_LOG.md` and terminate the session to save tokens.
 
 ## 3. Resource & API Management
-*   **Mouser Rate Limits**: Adhere to the limit of **30 calls per minute**. Implement a small `time.sleep()` in test loops if necessary.
+*   **Anti-Scraping Delays**: To avoid detection for "bulk downloading" or scraping, the script MUST implement a mandatory **random delay of 2 to 10 seconds** between each API call or datasheet download.
+*   **Mouser Rate Limits**: Adhere to the limit of **30 calls per minute**. The random delay mentioned above should naturally keep the script well below this threshold.
 *   **Token Efficiency**: Keep context lean. If the session history becomes too large, summarize progress into a file and start a fresh chapter or sub-agent task.
 *   **Ollama Memory**: Be mindful of the 7.2GB RAM limit. If the system slows down or swap usage spikes, pause for 60 seconds to allow the event loop to clear.
 
